@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<!--------------------------meta-------------------------->
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<meta name="keword" content="다편,가구,인테리어,혼수,이사,1인살림,1인가구,데코">
+		<meta name="description" content="내 몸에 딱 맞는 가구, 누가 써도 다 편한 가구">
+
+	<!--------------------------script-------------------------->
+		<script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+		
+		<script type="text/javascript"> //스크롤 한 화면단위 마우스 휠이동
+       window.onload = function () {
+            var elm = "section";
+          $(elm).each(function (index) {
+                // 개별적으로 Wheel 이벤트 적용
+                $(this).on("mousewheel DOMMouseScroll", function (e) {
+                    e.preventDefault();
+                    var delta = 0;
+                    if (!event) event = window.event;
+                    if (event.wheelDelta) {
+                        delta = event.wheelDelta / 120;
+                        if (window.opera) delta = -delta;
+                    } 
+                    else if (event.detail)
+                        delta = -event.detail / 3;
+                    var moveTop = $(window).scrollTop();
+                    var elmSelecter = $(elm).eq(index);
+                    // 마우스휠을 위에서 아래로
+                    if (delta < 0) {
+                        if ($(elmSelecter).next() != undefined) {
+                            try{
+                                moveTop = $(elmSelecter).next().offset().top;
+                            }catch(e){}
+                        }
+                    // 마우스휠을 아래에서 위로
+                    } else {
+                        if ($(elmSelecter).prev() != undefined) {
+                            try{
+                                moveTop = $(elmSelecter).prev().offset().top;
+                            }catch(e){}
+                        }
+                    }
+                     
+                    // 화면 이동 0.8초(800)
+                    $("html,body").stop().animate({
+                        scrollTop: moveTop + 'px'
+                    }, {
+                        duration: 800, complete: function () {
+                        }
+                    });
+                });                
+
+                /*
+                if($(window).width()>1200){
+               	$(this).on("mousewheel DOMMouseScroll")
+               }else{
+               		$(this).off("mousewheel DOMMouseScroll")
+               }
+               $(window).resize(function(){
+               if($(window).width()>1200){
+               	$(this).on("mousewheel DOMMouseScroll")
+               }else{
+               		$(this).off("mousewheel DOMMouseScroll")
+               }}); 
+               */
+            });
+        }
+    </script>
+
+    <script type="text/javascript"> //서브메뉴 드롭
+    	$(function(){
+    		$('.sd_snb').hide();
+    		$('#snb li').mouseenter(function(){
+    			$(this).find('.sd_snb').stop().slideDown();
+    		}).mouseleave(function(){
+    			$(this).find('.sd_snb').stop().slideUp();
+    		});
+    		$('.sd_snb').mouseenter(function(){
+    			$(this).stop().slideDown();
+    		})
+    	})
+    </script>
+
+    <script type="text/javascript"> //section1 슬라이드
+			$(document).ready(function(){
+				$('#sec1-control li').find('img').first().attr('src','images/index-main-c-on.png');
+				var num=0;
+				var dir='next';
+				var btn=$('#sec1-control li');
+				var slide=$('#slide li');
+				var Ldir=$('#slide .prev');
+				var Rdir=$('#slide .next');
+
+				btn.click(function(){
+					btn.find('img').attr('src','images/index-main-c-off.png');
+					$(this).find('img').attr('src','images/index-main-c-on.png');
+					var i=$(this).index();
+					move(i);
+				});
+
+				function move(i){
+					if(num==i){ /*정의(=) num이 i와 같다면(=)..뜻으로 =두번 들어감*/
+						return;
+					}
+					var p=slide.eq(num);
+					var n=slide.eq(i);
+					if(dir=='next'){
+						p.css({left:0}).stop().animate({left:'-100%'},1000);
+						n.css({left:'100%'}).stop().animate({left:0},1000);
+					}else{
+						p.css({left:0}).stop().animate({left:'100%'},1000);
+						n.css({left:'-100%'}).stop().animate({left:0},1000);
+					}
+					num=i;
+				}
+
+				timer();
+				function timer(){
+					var t=setInterval(function(){ 
+					var q=num+1;
+					if(q==slide.length){
+						q=0;
+					}
+					btn.eq(q).trigger('click');
+					},3000);
+				}				
+				
+
+				
+				Rdir.click(function(){
+					dir='next';
+					var q=num+1;
+					if(q==slide.length){
+						q=0;
+					}
+					btn.eq(q).trigger('click');
+				});
+				Ldir.click(function(){
+					dir='prev';
+					var q=num-1;
+					if(q<0){
+						q=slide.length-1;
+					}
+					btn.eq(q).trigger('click');
+				});
+				
+			});
+		</script>
+
+		<script type="text/javascript"> //section2 슬라이드
+			$(document).ready(function(){
+				$('#sec2-control li').removeClass('on');
+				$('#sec2-control li').first().addClass('on');
+				var num=0;
+				var dir='next';
+				var btn=$('#sec2-control li');
+				var slide=$('article');
+				var Ldir=$('section:nth-of-type(2) .prev');
+				var Rdir=$('section:nth-of-type(2) .next');
+
+				btn.click(function(){
+					btn.removeClass('on');
+					$(this).addClass('on');
+					var i=$(this).index();
+					move(i);
+				});
+
+				function move(i){
+					if(num==i){ /*정의(=) num이 i와 같다면(=)..뜻으로 =두번 들어감*/
+						return;
+					}
+					var p=slide.eq(num);
+					var n=slide.eq(i);
+					if(dir=='next'){
+						p.css({left:0}).stop().animate({left:'-100%'},800);
+						n.css({left:'100%'}).stop().animate({left:0},800);
+					}else{
+						p.css({left:0}).stop().animate({left:'100%'},800);
+						n.css({left:'-100%'}).stop().animate({left:0},800);
+					}
+					num=i;
+				}
+
+				
+				timer();
+				function timer(){
+					var t=setInterval(function(){ 
+					var q=num+1;
+					if(q==slide.length){
+						q=0;
+					}
+					btn.eq(q).trigger('click');
+					},5000);
+				}				
+
+				
+				Rdir.click(function(){
+					dir='next';
+					var q=num+1;
+					if(q==slide.length){
+						q=0;
+					}
+					btn.eq(q).trigger('click');
+				});
+				Ldir.click(function(){
+					dir='prev';
+					var q=num-1;
+					if(q<0){
+						q=slide.length-1;
+					}
+					btn.eq(q).trigger('click');
+				});				
+			});			
+		</script>
+
+		<script type="text/javascript"> //section4 슬라이드
+			$(document).ready(function(){
+				$('#sec4-control li').addClass('on');
+				var num=0;
+				var dir='next';
+				var btn=$('#sec4-control li');
+				var slide=$('#sec4-slide li');
+				var Ldir=$('section').eq(3).find('.prev');
+				var Rdir=$('section').eq(3).find('.next');
+
+				btn.click(function(){
+					btn.removeClass('on');
+					$(this).addClass('on');
+					var i=$(this).index();
+					move(i);
+				});
+
+				function move(i){
+					if(num==i){ /*정의(=) num이 i와 같다면(=)..뜻으로 =두번 들어감*/
+						return;
+					}
+					var p=slide.eq(num);
+					var n=slide.eq(i);
+					if(dir=='next'){
+						p.css({left:0}).stop().animate({left:'-100%'},800);
+						n.css({left:'100%'}).stop().animate({left:0},800);
+					}else{
+						p.css({left:0}).stop().animate({left:'100%'},800);
+						n.css({left:'-100%'}).stop().animate({left:0},800);
+					}
+					num=i;
+				}
+
+				/*
+				timer();
+				function timer(){
+					var t=setInterval(function(){ 
+					var q=num+1;
+					if(q==slide.length){
+						q=0;
+					}
+					btn.eq(q).trigger('click');
+					},3000);
+				}
+				*/
+
+				
+				Rdir.click(function(){
+					dir='next';
+					var q=num+1;
+					if(q==slide.length){
+						q=0;
+					}
+					btn.eq(q).trigger('click');
+				});
+				Ldir.click(function(){
+					dir='prev';
+					var q=num-1;
+					if(q<0){
+						q=slide.length-1;
+					}
+					btn.eq(q).trigger('click');
+				});
+				
+			});
+		</script>	
+		
+
+	<!--------------------------link-------------------------->
+		<link rel="icon" type="image/x-icon" href="images/logo.png">
+		<link rel="stylesheet" type="text/css" href="css/index.css">
+
+	<!--------------------------font-------------------------->
+		<style>
+			@font-face {
+				font-family:코펍돋움;
+				src:url(font/KoPubWorldDotumMedium.eot);
+			}
+			@font-face {
+				font-family:나눔스퀘어;
+				src:url(font/NanumSquareR.eot);
+			}
+		</style>
+		<link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+	<!--------------------------style-------------------------->
+		<style type="text/css">
+			* {margin:0; padding:0; box-sizing:border-box;}
+			html,body {
+				font-size:15px; color:#333;
+				font-family:코펍돋움, 'Raleway', sans-serif; 
+				width:100%; height:100%;
+			}
+			img {vertical-align:top;}
+			a {text-decoration:none; color:#333;}
+			li {list-style:none;}
+			#sec2-control li.on {background-color:#2a384a;}
+		</style>
+
+	<title>다편-내 몸에 딱 맞는 가구</title>
+</head>
+<body>
+	<div id="wrapper">
+		<header>
+			<div>
+				<h1><a href="index.html" title="홈화면"><img src="images/logo.png" alt="다편 로고"></a></h1>
+				<form><button><img src="images/search.png" alt="검색"></button><input type="text"></form>
+				<ul id="lnb">
+					<li><a href="#" title="로그인"><img src="images/login.png" alt="로그인"></a></li>
+					<li><a href="#" title="장바구니"><img src="images/cart.png" alt="장바구니"></a></li>
+				</ul>
+			</div>
+			<div>
+				<ul id="snb">
+					<li><a href="#">다편</a>
+						<ul class="sd_snb">
+							<li><a href="#">브랜드 소개</a></li>
+							<li><a href="#">매장 찾기</a></li>
+						</ul>
+					</li>
+					<li><a href="sub02.html">가구</a>
+						<ul class="sd_snb">
+							<li><a href="#">침실 가구</a></li>
+							<li><a href="#">거실 가구</a></li>
+							<li><a href="#">주방 가구</a></li>
+							<li><a href="#">수납 가구</a></li>
+							<li><a href="#">아동 가구</a></li>
+							<li><a href="#">사무 가구</a></li>
+							<li><a href="#">반려동물 가구</a></li>
+							<li><a href="#">인테리어 소품</a></li>
+						</ul>
+					</li>
+					<li><a href="#">인테리어</a>
+						<ul class="sd_snb">
+							<li><a href="#">라이프 스타일</a></li>
+							<li><a href="#">시즌</a></li>
+						</ul>
+					</li>
+					<li><a href="#">커뮤니티</a>
+						<ul class="sd_snb">
+							<li><a href="#">공지사항</a></li>
+							<li><a href="#">이벤트</a></li>
+							<li><a href="#">구매 후기</a></li>
+							<li><a href="#">중고 거래</a></li>
+							<li><a href="#">문의</a></li>
+						</ul>
+					</li>
+				</ul>				
+			</div>			
+		</header>
+		<section><!--------- section 1 ---------->
+			<div class="row">
+				<span class="prev">&nbsp;</span>
+				<ul id="slide">
+					<li><a href="#" title=""><img src="images/main01.jpg" alt="28일까지 할인"></a></li>
+					<li><a href="#" title=""><img src="images/main02.jpg" alt="크리스마스 할인"></a></li>
+					<li><a href="#" title=""><img src="images/main03.jpg" alt="라탄가구 할인"></a></li>
+					<li><a href="#" title=""><img src="images/main04.jpg" alt="데코상품 할인"></a></li>
+				</ul>
+				<ul id="sec1-control">
+					<li><img src="images/index-main-c-off.png" alt="컨트롤 버튼"></li>
+					<li><img src="images/index-main-c-off.png" alt="컨트롤 버튼"></li>
+					<li><img src="images/index-main-c-off.png" alt="컨트롤 버튼"></li>
+					<li><img src="images/index-main-c-off.png" alt="컨트롤 버튼"></li>
+				</ul>
+				<span class="next">&nbsp;</span>
+			</div>			
+		</section>
+		<section><!--------- section 2 ---------->
+			<div class="row">
+				<span class="prev"><img src="images/left.png" alt="이전"></span>
+				<div id="slide2">
+					<article>					
+						<a href="#"><img src="images/index-sec2-01.jpg"></a>															
+					</article>
+					<article>
+						<a href="#"><img src="images/index-sec2-02.jpg"></a>
+					</article>
+					<article>article3</article>
+					<article>article4</article>
+					<article>article5</article>
+				</div>
+				<span class="next"><img src="images/right.png" alt="다음"></span>
+			</div>
+			<div class="row">
+				<ul id="sec2-control">
+					<li>&nbsp;</li>
+					<li>&nbsp;</li>
+					<li>&nbsp;</li>
+					<li>&nbsp;</li>
+					<li>&nbsp;</li>
+				</ul>
+			</div>						
+		</section>
+		<section><!--------- section 3 ---------->
+			<div class="row">
+				<ul>
+					<li class="row-1-8">
+						<dl>
+							<a href="#" title="침실 가구">
+								<dt><img src="images/sec3-ver01.jpg" alt="침실 가구"></dt>
+								<dd>Bedroom</dd>
+							</a>
+						</dl>					
+					</li>
+					<li class="row-1-8">
+						<dl>
+							<a href="#" title="거실 가구">
+								<dt>Livingroom</dt>
+								<dd><img src="images/sec3-ver02.jpg" alt="거실 가구"></dd>
+							</a>
+						</dl>					
+					</li>
+					<li class="row-1-8">
+						<dl>
+							<a href="#" title="주방 가구">
+								<dt><img src="images/sec3-ver03.jpg" alt="주방 가구"></dt>
+								<dd>Diningroom</dd>
+							</a>
+						</dl>					
+					</li>
+					<li class="row-1-8">
+						<dl>
+							<a href="#" title="수납 가구">
+								<dt>Storage</dt>
+								<dd><img src="images/sec3-ver04.jpg" alt="수납 가구"></dd>
+							</a>
+						</dl>					
+					</li>
+					<li class="row-1-8">
+						<dl>
+							<a href="#" title="아동 가구">
+								<dt><img src="images/sec3-ver05.jpg" alt="아동 가구"></dt>
+								<dd>Kids</dd>
+							</a>
+						</dl>					
+					</li>
+					<li class="row-1-8">
+						<dl>
+							<a href="#" title="사무 가구">
+								<dt>Office</dt>
+								<dd><img src="images/sec3-ver06.jpg" alt="사무 가구"></dd>
+							</a>
+						</dl>					
+					</li>
+					<li class="row-1-8">
+						<dl>
+							<a href="#" title="반려동물 가구">
+								<dt><img src="images/sec3-ver07.jpg" alt="반려동물 가구"></dt>
+								<dd>Pets</dd>
+							</a>
+						</dl>					
+					</li>
+					<li class="row-1-8">
+						<dl>
+							<a href="#" title="인테리어 소품">
+								<dt>Acc</dt>
+								<dd><img src="images/sec3-ver08.jpg" alt="인테리어 소품"></dd>
+							</a>
+						</dl>					
+					</li>			
+				</ul>
+			</div>
+		</section>
+		<section><!--------- section 4 ---------->			
+			<span class="prev"><img src="images/prev.png" alt="이전"></span>
+			<div class="row">				
+				<ul id="sec4-slide">
+					<li><a href="#" title="철제 드레스룸 9종"><img src="images/sec4-slide01.jpg" alt="철제 드레스룸 9종"></a></li>
+					<li><a href="#" title="예비크 선반장"><img src="images/sec4-slide02.jpg" alt="예비크 선반장"></a></li>
+					<li><a href="#" title="프레니 수납 침대"><img src="images/sec4-slide03.jpg" alt="프레니 수납 침대"></a></li>
+				</ul>
+				<ul id="sec4-control">
+					<li>&nbsp;</li>
+					<li>&nbsp;</li>
+					<li>&nbsp;</li>
+				</ul>				
+			</div>	
+			<span class="next"><img src="images/next.png" alt="다음"></span>		
+		</section>
+		<section>
+			<footer>
+				<h2><a href="index.html" title="홈화면"><img src="images/logo.png" alt="다편 푸터 로고"></a></h2>
+				<p>COPYRIGHTⓒ다편 ALL RIGHTS RESERVED.</p>
+				<ul>
+					<li><img src="images/kakao.png" alt="카카오톡 문의" title="카카오톡 문의"></li>
+					<li><img src="images/mail.png" alt="이메일 문의" title="이메일 문의"></li>
+					<li><img src="images/delivery.png" alt="배송 문의" title="배송 문의"></li>
+				</ul>
+				<ul>
+					<li><a href="#">이용약관</a></li>
+					<li><a href="#">개인정보취급방침</a></li>
+					<li><a href="#">이용안내</a></li>
+					<li><a href="#">광고/제휴문의</a></li>
+				</ul>
+				<div class="row">
+					<ul>
+						<li>
+							<dl>
+								<dt>다편</dt>
+								<dd><b>브랜드 소개</b>
+									<ul class="fnb">
+										<li><a href="#">다편</a></li>
+										<li><a href="#">연혁</a></li>
+										<li><a href="#">오시는길</a></li>
+									</ul>
+								</dd>
+								<dd><b>매장 찾기</b>
+									<ul class="fnb">
+										<li><a href="#">전국매장검색</a></li>
+										<li><a href="#">A/S</a></li>
+									</ul>
+								</dd>
+							</dl>
+						</li>
+						<li>
+							<dl>
+								<dt>가구</dt>
+								<dd><b>침실 가구</b>
+									<ul class="fnb">
+										<li><a href="#">침대</a></li>
+										<li><a href="#">매트리스</a></li>
+										<li><a href="#">화장대</a></li>
+										<li><a href="#">협탁</a></li>
+										<li><a href="#">침대세트</a></li>
+									</ul>
+								</dd>
+								<dd><b>거실 가구</b>
+									<ul class="fnb">
+										<li><a href="#">소파</a></li>
+										<li><a href="#">장식/진열장</a></li>
+										<li><a href="#">거실 수납장</a></li>
+										<li><a href="#">테이블</a></li>
+										<li><a href="#">콘솔</a></li>
+									</ul>
+								</dd>
+								<dd><b>주방 가구</b>
+									<ul class="fnb">
+										<li><a href="#">식탁/의자</a></li>
+										<li><a href="#">주방 선반</a></li>
+										<li><a href="#">주방 수납장</a></li>
+										<li><a href="#">레인지대</a></li>
+										<li><a href="#">아일랜드바</a></li>
+									</ul>
+								</dd>
+								<dd><b>수납 가구</b>
+									<ul class="fnb">
+										<li><a href="#">수납장</a></li>
+										<li><a href="#">캐비넷</a></li>
+										<li><a href="#">옷장</a></li>
+										<li><a href="#">신발장</a></li>
+										<li><a href="#">행거</a></li>
+									</ul>
+								</dd>								
+								<dd><b>아동 가구</b>
+									<ul class="fnb">
+										<li><a href="#">침대</a></li>
+										<li><a href="#">책상/의자</a></li>
+										<li><a href="#">수납/정리함</a></li>
+										<li><a href="#">옷장/서랍장</a></li>
+										<li><a href="#">소파</a></li>
+									</ul>
+								</dd>
+								<dd><b>사무 가구</b>
+									<ul class="fnb">
+										<li><a href="#">책상</a></li>
+										<li><a href="#">의자</a></li>
+										<li><a href="#">책장/선반</a></li>
+										<li><a href="#">서랍장</a></li>
+										<li><a href="#">오피스세트</a></li>
+									</ul>
+								</dd>
+								<dd><b>반려동물 가구</b>
+									<ul class="fnb">
+										<li><a href="#">캣타워</a></li>
+										<li><a href="#">쿠션/하우스</a></li>
+										<li><a href="#">배변용품</a></li>
+									</ul>
+								</dd>
+								<dd><b>인테리어 소품</b>
+									<ul class="fnb">
+										<li><a href="#">페브릭</a></li>
+										<li><a href="#">데코</a></li>
+										<li><a href="#">조명</a></li>
+									</ul>
+								</dd>
+							</dl>						
+						</li>
+						<li>
+							<dl>
+								<dt>인테리어</dt>
+								<dd><b>라이프 스타일</b>
+									<ul class="fnb">
+										<li><a href="#">1인가구</a></li>
+										<li><a href="#">2인가구</a></li>
+										<li><a href="#">다인가구</a></li>
+									</ul>
+								</dd>
+								<dd><b>시즌</b>
+									<ul class="fnb">
+										<li><a href="#">봄/가을</a></li>
+										<li><a href="#">여름</a></li>
+										<li><a href="#">겨울</a></li>
+									</ul>
+								</dd>
+							</dl>
+						</li>
+						<li>
+							<dl>
+								<dt>커뮤니티</dt>
+								<dd><b><a href="#">공지사항</a></b></dd>
+								<dd><b>이벤트</b>
+									<ul class="fnb">
+										<li><a href="#"></a></li>
+										<li><a href="#"></a></li>
+										<li><a href="#"></a></li>
+									</ul>
+								</dd>
+								<dd><b><a href="#">구매후기</a></b></dd>
+								<dd><b><a href="#">중고거래</a></b></dd>
+								<dd><b>문의</b>
+									<ul class="fnb">
+										<li><a href="#">FAQ</a></li>
+										<li><a href="#">1:1문의</a></li>
+									</ul>
+								</dd>
+							</dl>
+						</li>
+					</ul>				
+				</div>			
+			</footer>
+		</section>
+				
+	</div>	
+</body>
+</html>
